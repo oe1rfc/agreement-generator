@@ -1,0 +1,221 @@
+\documentclass[a4paper, parskip=half]{scrlttr2} 
+
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc} 
+\usepackage[ngerman]{babel} 
+\usepackage{lmodern} 
+\usepackage[juratotoc]{scrjura}
+\usepackage[a4paper,margin=1.5cm,top=1.6cm,bottom=4cm]{geometry}
+\usepackage{lastpage}
+\usepackage{fancyhdr}% headers
+\usepackage{graphicx} % logo include
+\usepackage{color} % text colors
+\usepackage{setspace}
+\usepackage{enumitem,amssymb}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+\newcommand{\done}{\rlap{$\square$}{\raisebox{2pt}{\large\hspace{1pt}\cmark}}%
+\hspace{-2.5pt}}
+\newcommand{\wontfix}{\rlap{$\square$}{\large\hspace{1pt}\xmark}}
+
+\usepackage{paratype} % font
+\renewcommand*\familydefault{\sfdefault} %% Only if the base font of the document is to be sans serif
+\usepackage[T1]{fontenc}
+
+\definecolor{color-dark}{RGB}{50,50,50}
+\definecolor{color-grey}{RGB}{100,100,100}
+
+
+
+
+
+% header
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\vspace{5pt} \includegraphics[width=5cm]{C3W_RB.png}\vspace{-1.2cm}}
+\fancyhead[L]{\textcolor{color-grey}{\textbf{Chaos Computer Club Wien (C3W)}\\\small buero@c3w.at}
+}
+\fancyfoot[C]{\fontsize{7}{7} Chaos Computer Club Wien (C3W)\\ \href{https://c3w.at/}{https://c3w.at/}}
+
+
+% lines
+\renewcommand{\headrulewidth}{2pt}
+\renewcommand{\headrule}{\hbox to\headwidth{%
+  \color{color-grey}\leaders\hrule height \headrulewidth\hfill}}
+\renewcommand{\footrulewidth}{0.5pt}
+\renewcommand{\footrule}{\hbox to\headwidth{%
+  \color{color-grey}\leaders\hrule height \footrulewidth\hfill}}
+\color{color-dark}
+
+
+
+
+\usepackage[T1]{fontenc}
+\usepackage{selinput}
+\SelectInputMappings{adieresis={ä},germandbls={ß}}
+\usepackage[ngerman]{babel}
+
+\usepackage{tabularx}
+\usepackage{booktabs}
+
+\usepackage{numprint}
+\nprounddigits{2}
+
+\usepackage[right]{eurosym}
+
+\usepackage{datatool}
+\DTLnewdb{talkliste}
+
+\newcommand\Talk[2]{%
+  \DTLnewrow{talkliste}
+  \DTLnewdbentry{talkliste}{Bezeichnung}{#1}
+  \DTLnewdbentry{talkliste}{Aufzeichnung}{#2}
+}
+
+\newcommand\einreichungtxt{}
+\newcommand\aufzeichnungtxt{}
+\newenvironment{talkliste}[2]{%
+  \DTLcleardb{talkliste}%
+  \renewcommand\einreichungtxt{#1}%
+  \renewcommand\aufzeichnungtxt{#2}%
+}{%
+  \par\centering
+  \begin{tabularx}{\textwidth}{Xrrr}
+    \toprule
+    \einreichungtxt&\aufzeichnungtxt
+    \DTLforeach*{talkliste}{\bez=Bezeichnung,\aufz=Aufzeichnung}{%
+      \DTLiffirstrow{\\\midrule}{\\}
+      \bez&\aufz
+      \vspace{0.2 cm} 
+    }\\
+    \bottomrule
+  \end{tabularx}
+  \par
+}
+
+\renewcommand\raggedsignature{\raggedright}
+\usepackage{hyperref}
+
+
+
+\newcommand{\speakername}{}
+
+\begin{document} 
+%- for speaker in speakers
+\clearpage
+\thispagestyle{fancy}
+ 
+ 
+\renewcommand{\speakername}{\VAR{speaker.public_name|e}}
+\fancyfoot[R]{\textcolor{color-grey}{\speakername}}
+ 
+\vspace*{0.4 cm}
+\centerline{\includegraphics[width=8cm]{PW19_Logo.pdf}}
+
+\vspace*{0.5 cm} 
+\centerline{\LARGE{\textbf{Speaker’s Agreement}}}
+\vspace*{0.25 cm} 
+\centerline{\Large{PrivacyWeek 2019}}
+
+\vspace{1cm}
+\large
+
+%- if speaker.language == 'de'
+
+\begin{todolist}
+%- if not speaker.record
+    \item[\done] Meine Vorträge bzw. Workshops (unten genannt) werden nicht aufgezeichnet und sind weder im Livestream, 
+        noch in den Veröffentlichungen zu sehen.
+%- else
+    \item[\done] Ich bin einverstanden mit Streaming und Aufzeichnung der unten genannten Vorträge in Bild, Ton und Text. \\
+    Die Aufzeichnungen meines Vortrags dürfen von der PrivacyWeek veröffentlicht und zum Download bereitgestellt werden. \\
+    Auch der Livestream darf öffentlich übertragen werden.
+    \item Die Aufzeichnungen meines Vortrags dürfen von der PrivacyWeek für eventbezogenes Werbematerial verwendet werden.
+%- endif
+\end{todolist}
+
+
+\vspace{1.1cm}
+
+\begin{tabular}{p{7cm}p{.5cm}l}
+\dotfill \\ 
+Ort, Datum
+\end{tabular}
+\hfill 
+\begin{tabular}{p{7cm}p{.5cm}l}
+\dotfill \\ 
+\speakername
+\end{tabular}
+
+\vspace{0.5 cm}
+
+\normalsize
+Weitere Informationen zum Datenschutz des C3W: \href{https://c3w.at/datenschutz}{c3w.at/datenschutz}
+
+\begin{talkliste}{Einreichung}{Aufzeichnung}
+%- for talk in speaker.talks
+  \Talk{\VAR{talk.title|e}}{
+%- if not talk.do_not_record
+    \cmark \qquad
+%- else
+    \xmark \qquad
+%- endif
+}
+%- endfor
+\end{talkliste}
+\vspace{0.1cm}
+Etwaige Verstöße gegen die Rechte (z.B. Urheberrechte) Dritter liegen in der Verantwortung der jeweiligen Vortragenden.
+
+%- else
+
+\begin{todolist}
+%- if not speaker.record
+    \item[\done] My talks, workshops or art performances are not going to be recorded by the PrivacyWeek team and won't be live-streamed or published afterwards.
+%- else
+    \item[\done] I agree with the streaming, recording, taking photos and textual documentation of my talks, workshops or art performances. \\
+        The recordings may be published and provided for download by C3W and the PrivacyWeek team. \\
+        Also the Livestream may be broadcasted publicly.
+    \item The recordings of my talk, workshop or art performance may be used by C3W and the PrivacyWeek team for 
+        event related advertising material (e.g. trailer).
+%- endif
+\end{todolist}
+
+
+\vspace{1.1cm}
+
+\begin{tabular}{p{7cm}p{.5cm}l}
+\dotfill \\ 
+Place, Date
+\end{tabular}
+\hfill 
+\begin{tabular}{p{7cm}p{.5cm}l}
+\dotfill \\ 
+\speakername
+\end{tabular}
+
+\vspace{0.5 cm}
+
+\normalsize
+Further information on C3W data privacy: \href{https://c3w.at/datenschutz}{c3w.at/datenschutz}
+
+\begin{talkliste}{Title}{Recording}
+%- for talk in speaker.talks
+  \Talk{\VAR{talk.title|e}}{
+%- if not talk.do_not_record
+    \cmark \qquad
+%- else
+    \xmark \qquad
+%- endif
+}
+%- endfor
+\end{talkliste}
+\vspace{0.1cm}
+Any infridgements of third-party rights in talks, workshops or performances fall solely in the responsibility of their speakers.
+
+%- endif
+
+%- endfor
+\end{document}

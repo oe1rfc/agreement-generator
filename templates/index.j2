@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>PrivacyWeek Speakers Agreement Generator</title>
+  </head>
+  <body>
+    <h1>Welcome to the PrivacyWeek Speaker Agreement Generator</h1>
+    <ul>
+{% for speaker in speakers %}
+      <li><a href="/{{ speaker.code }}">{{ speaker.public_name }}</a></li>
+{% endfor %}
+      <li><a href="/all"><b>ALL speakers in one PDF</b></a></li>
+    </ul>
+  </body>
+</html>
