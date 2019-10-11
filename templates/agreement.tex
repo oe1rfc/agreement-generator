@@ -137,7 +137,6 @@
 %- endif
 \end{todolist}
 
-
 \vspace{1.1cm}
 
 \begin{tabular}{p{7cm}p{.5cm}l}
@@ -155,8 +154,10 @@ Ort, Datum
 \normalsize
 Weitere Informationen zum Datenschutz des C3W: \href{https://c3w.at/datenschutz}{c3w.at/datenschutz}
 
+\vfil
+
 \begin{talkliste}{Einreichung}{Aufzeichnung}
-%- for talk in speaker.talks
+%- for talk in speaker.talks|sort(attribute='do_not_record')
   \Talk{\VAR{talk.title|e}}{
 %- if not talk.do_not_record
     \cmark \qquad
@@ -168,6 +169,7 @@ Weitere Informationen zum Datenschutz des C3W: \href{https://c3w.at/datenschutz}
 \end{talkliste}
 \vspace{0.1cm}
 Etwaige Verstöße gegen die Rechte (z.B. Urheberrechte) Dritter liegen in der Verantwortung der jeweiligen Vortragenden.
+\vfil
 
 %- else
 
@@ -201,8 +203,10 @@ Place, Date
 \normalsize
 Further information on C3W data privacy: \href{https://c3w.at/datenschutz}{c3w.at/datenschutz}
 
+\vfil
+
 \begin{talkliste}{Title}{Recording}
-%- for talk in speaker.talks
+%- for talk in speaker.talks|sort(attribute='do_not_record')
   \Talk{\VAR{talk.title|e}}{
 %- if not talk.do_not_record
     \cmark \qquad
@@ -214,6 +218,7 @@ Further information on C3W data privacy: \href{https://c3w.at/datenschutz}{c3w.a
 \end{talkliste}
 \vspace{0.1cm}
 Any infridgements of third-party rights in talks, workshops or performances fall solely in the responsibility of their speakers.
+\vfil
 
 %- endif
 

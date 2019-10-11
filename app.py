@@ -7,6 +7,7 @@ import os, requests
 app = Flask(__name__)
 
 fahrplanjson_url = "https://fahrplan.privacyweek.at/pw19/schedule/export/schedule.json"
+fahrplan_recordrooms = ["Saal 1", "Saal 2"]
 
 def get_speakerdata():
     speakers = {}
@@ -20,6 +21,8 @@ def get_speakerdata():
                         speakers[p['code']]['talks'] = []
                         speakers[p['code']]['record'] = False
                         speakers[p['code']]['language'] = t['language']
+                    if fahrplan_recordrooms and t['room'] not in fahrplan_recordrooms:
+                        t['do_not_record'] = True
                     speakers[p['code']]['talks'].append(t)
                     if t['do_not_record'] == False:
                         speakers[p['code']]['record'] = True
