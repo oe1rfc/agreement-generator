@@ -1,4 +1,4 @@
-from flask import Flask, send_file, redirect, render_template
+from flask import Flask, send_file, redirect, render_template, Response
 from jinja2.loaders import FileSystemLoader
 from latex.jinja2 import make_env
 from latex import build_pdf
@@ -52,11 +52,9 @@ def agreement(code):
     if not speakers:
         return redirect('/')
     pdf = generate_agreement(speakers)
-    res = send_file(pdf.stream, attachment_filename="speaker_agreement_%s.pdf" % code)
-    res.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-    res.headers["Pragma"] = "no-cache"
-    res.headers["Expires"] = "0"
-    return res
+    return Response(pdf.stream, content_type='application/pdf',
+        headers={ 'Cache-Control': 'no-cache, no-store, must-revalidate',
+                    'Pragma': 'no-cache', 'Expires': '0' })
 
 if __name__ == '__main__':
     app.run()
