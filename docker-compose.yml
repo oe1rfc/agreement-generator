@@ -1,0 +1,35 @@
+version: "3.3"
+
+services:
+  traefik:
+    image: "traefik:latest"
+    container_name: "traefik"
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.le-http.acme.httpchallenge=true"
+      - "--certificatesresolvers.le-http.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.le-http.acme.storage=/letsencrypt/acme.json"
+#      - "--certificatesresolvers.le-http.acme.email=postmaster@mydomain.com"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "./letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  app:
+    image: "agreement-generator"
+    build: '.'
+    container_name: "agreement-generator"
+    expose:
+      - "5000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`my.example.com`)"
+      - "traefik.http.routers.whoami.entrypoints=websecure"
+      - "traefik.http.routers.whoami.tls.certresolver=le-http"
